@@ -12,16 +12,7 @@ import {
 
 function App() {
   return (
-    <Router>
-      <Switch>
-          <Route path="/pay">
-            <PaymentForm total={"5.000.000,00"} />
-          </Route>
-          <Route path="/receipt">
-            <Receipt total={"5.000.000,00"} />
-          </Route>
-        </Switch>
-    </Router>
+    <PaymentForm total={"5.000.000,00"} />
   );
 }
 

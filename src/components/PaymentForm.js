@@ -1,10 +1,47 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Receipt from './Receipt'
 import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
 import IMask from 'imask';
 import logo from '../img/logos/itss_trans.png';
 import $ from 'jquery';
 
 class PaymentForm extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            bancos: null,
+            precio:0};
+      }
+
+    componentWillMount(){
+        fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/U0xEQjtVMHhFUWp0allXcGxjbTh3TVR0SGIyOW5iR1ZEYUhKdmJXVTdWbVZ5YzJsdmJqZ3dMakF1TXprNE55NHhNakk3TVRreUxqRTJPQzQ0TWk0eE1UVT0=/192.168.1.1`)
+        .then(res => res.json())
+        .then((data) => {
+
+            //Create bank list
+            var lista_bancos = JSON.parse(data.mensaje)
+            lista_bancos = lista_bancos.listabancosSAMF.lista
+            let options = lista_bancos.map( (data) =>
+                    <option 
+                        key={data.cod}
+                        value={data.cod}
+                    >
+                        {data.nombre}
+                    </option>
+                );
+            this.setState({
+                bancos: options
+                });
+        })
+        .catch(console.log)
+
+        var urlParams = new URLSearchParams(window.location.search);
+        this.setState({
+            precio: urlParams.get('price')
+            });
+    }
 
     componentDidMount(){
         var otp_mask = IMask(document.getElementById('otp'),{
@@ -18,12 +55,12 @@ class PaymentForm extends React.Component {
     render() {
         return (
         <Container>
-            <Card style={{ width: '470px' }}>
-                <Card.Img variant="top" src={logo} />
+            <Card style={{ width: '100%', height: '100%' }}>
+                <Card.Img variant="top" src={logo}/>
                 <Card.Body>
-                    <Card.Title>Total a pagar: Bs {this.props.total}</Card.Title>
+                    <Card.Title>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</Card.Title>
                     <Card.Text>
-                        <Form>
+                        <Form noValidate>
                             <Row>
                                 <Col xs={4} md={4} ls={4}>
                                     <Form.Group controlId="prefijo">
@@ -68,40 +105,7 @@ class PaymentForm extends React.Component {
                                     <Form.Group controlId="banco">
                                     <Form.Label>Banco</Form.Label>
                                     <Form.Control size="sm" as="select">
-                                        <option value="0138">BANCO PLAZA</option>
-                                        <option value="0156">100%BANCO</option>
-                                        <option value="0196">ABN AMRO BANK</option>
-                                        <option value="0172">BANCAMIGA BANCO MICROFINANCIERO, C.A.</option>
-                                        <option value="0171">BANCO ACTIVO BANCO COMERCIAL, C.A.</option>
-                                        <option value="0166">BANCO AGRICOLA</option>
-                                        <option value="0175">BANCO BICENTENARIO</option>
-                                        <option value="0128">BANCO CARONI, C.A. BANCO UNIVERSAL</option>
-                                        <option value="0164">BANCO DE DESARROLLO DEL MICROEMPRESARIO</option>
-                                        <option value="0102">BANCO DE VENEZUELA S.A.I.C.A.</option>
-                                        <option value="0114">BANCO DEL CARIBE C.A.</option>
-                                        <option value="0149">BANCO DEL PUEBLO SOBERANO C.A.</option>
-                                        <option value="0163">BANCO DEL TESORO</option>
-                                        <option value="0176">BANCO ESPIRITO SANTO, S.A.</option>
-                                        <option value="0115">BANCO EXTERIOR C.A.</option>
-                                        <option value="0003">BANCO INDUSTRIAL DE VENEZUELA.</option>
-                                        <option value="0173">BANCO INTERNACIONAL DE DESARROLLO, C.A.</option>
-                                        <option value="0105">BANCO MERCANTIL C.A.</option>
-                                        <option value="0191">BANCO NACIONAL DE CREDITO</option>
-                                        <option value="0116">BANCO OCCIDENTAL DE DESCUENTO.</option>
-                                        <option value="0108">BANCO PROVINCIAL BBVA</option>
-                                        <option value="0104">BANCO VENEZOLANO DE CREDITO S.A.</option>
-                                        <option value="0168">BANCRECER S.A. BANCO DE DESARROLLO</option>
-                                        <option value="0134">BANESCO BANCO UNIVERSAL</option>  
-                                        <option value="0177">BANFANB</option>
-                                        <option value="0146">BANGENTE</option>
-                                        <option value="0174">BANPLUS BANCO COMERCIAL C.A</option>
-                                        <option value="0190">CITIBANK.</option>
-                                        <option value="0121">CORP BANCA.</option>
-                                        <option value="0157">DELSUR BANCO UNIVERSAL</option>
-                                        <option value="0151">FONDO COMUN</option>
-                                        <option value="0601">INSTITUTO MUNICIPAL DE CR&#201;DITO POPULAR</option>
-                                        <option value="0169">MIBANCO BANCO DE DESARROLLO, C.A.</option>
-                                        <option value="0137">SOFITASA</option>
+                                        {this.state.bancos}
                                     </Form.Control>
                                     </Form.Group>
                                 </Col>
@@ -122,7 +126,7 @@ class PaymentForm extends React.Component {
                                     </Form.Group>
                                 </Col>
                             </Row>
-                            <Button variant="primary" onClick={pay}>
+                            <Button variant="primary" onClick={this.pay.bind(this, this.state.precio)}>
                             Pagar Ahora
                             </Button>
                         </Form>
@@ -132,23 +136,29 @@ class PaymentForm extends React.Component {
         </Container>
     );
     }
-}
 
-function pay() {
-
-    //Construct Endpoint String
-    var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${"5000.00"};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
-    console.log(params)
-    var b64_params = btoa(`SC2p;${btoa(params)}`);
-
-    //Api call
-    fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
-        .then(res => res.json())
-        .then((data) => {
-          console.log(data)
-          window.location.href ='./receipt'
-        })
-        .catch(console.log)
+    pay(precio) {
+        //Construct Endpoint String
+        var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
+        console.log(params)
+        var b64_params = btoa(`SC2p;${btoa(params)}`);
+    
+        //Api call
+        fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
+            .then(res => res.json())
+            .then((data) => {
+    
+                var mensaje = JSON.parse(data.mensaje)
+                console.log(data.detalle)
+    
+                var time = new Date().getTime();
+                var date = new Date(time)
+    
+                ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={"Banco de Venezuela"} detalle={data.detalle.replace("detalle: ", "")}
+                tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={date.toLocaleDateString('es-ES')}/>, document.getElementById('root'));
+            })
+            .catch(console.log)
+    }
 }
 
 export default PaymentForm;
