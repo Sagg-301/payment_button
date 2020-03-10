@@ -27,6 +27,7 @@ class PaymentForm extends React.Component {
                     <option 
                         key={data.cod}
                         value={data.cod}
+                        selected={ data.nombre == "BANCO PLAZA"? "selected":"" }
                     >
                         {data.nombre}
                     </option>
