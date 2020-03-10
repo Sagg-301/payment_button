@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Receipt from './Receipt'
-import { Button, Form, Container, Row, Col, Card } from 'react-bootstrap';
+import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import IMask from 'imask';
 import logo from '../img/logos/itss_trans.png';
 import $ from 'jquery';
@@ -55,6 +55,7 @@ class PaymentForm extends React.Component {
     render() {
         return (
         <Container>
+            <div id="alert"></div>
             <Card style={{ width: '100%', height: '100%' }}>
                 <Card.Img variant="top" src={logo}/>
                 <Card.Body>
@@ -141,23 +142,44 @@ class PaymentForm extends React.Component {
         //Construct Endpoint String
         var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
         console.log(params)
-        var b64_params = btoa(`SC2p;${btoa(params)}`);
+        var b64_params = btoa(`SC2P;${btoa(params)}`);
     
-        //Api call
+        //Api call 
+        // ReactDOM.render(<Alert variant="danger" onClose={() => setShow(false)} dismissible>
+        //     Error
+        // </Alert>, document.getElementById('alert'))
         fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
             .then(res => res.json())
             .then((data) => {
     
                 var mensaje = JSON.parse(data.mensaje)
-                console.log(data.detalle)
+                console.log(data)
     
                 var time = new Date().getTime();
                 var date = new Date(time)
-    
-                ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={"Banco de Venezuela"} detalle={data.detalle.replace("detalle: ", "")}
-                tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={date.toLocaleDateString('es-ES')}/>, document.getElementById('root'));
+
+                if (this.validate()){
+                    ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={$('#banco').find('option:selected').text()} detalle={data.detalle.replace("detalle: ", "")}
+                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={date.toLocaleDateString('es-ES')}/>, document.getElementById('root'));
+                }
+
             })
-            .catch(console.log)
+            .catch(this.alert('Error en conexión','danger'))
+    }
+    
+
+    validate(){
+        if ($('#telefono').val() == '' || $('#numeroci').val() == '' || $('#concepto').val() == '' || $('#otp').val() == ''){
+            this.alert("Todos los datos son obligatorios","danger")
+            return false
+        }
+
+        return true
+    }
+    alert(message, variant){
+        ReactDOM.render(<Alert variant={variant} dismissible>
+                            {message}
+                        </Alert>, document.getElementById('alert'))   
     }
 }
 

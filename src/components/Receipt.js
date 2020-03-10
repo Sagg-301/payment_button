@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Image, Button, Card } from 'react-bootstrap';
 import check_mark from '../img/check.svg'
-import print from 'print-js'
 
 class Receipt extends React.Component {
     render() {
@@ -47,7 +46,7 @@ class Receipt extends React.Component {
                                 <br/>
                                 <Row>
                                     <Col xs={12} md={12} ls={12}>
-                                        <Button onClick={print_page}>imprimir</Button>
+                                        <Button onClick={print_page}>Imprimir</Button>
                                     </Col>
                                 </Row>
                             </Container>
