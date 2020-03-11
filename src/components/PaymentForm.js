@@ -16,13 +16,13 @@ class PaymentForm extends React.Component {
       }
 
     componentWillMount(){
-        fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/U0xEQjtVMHhFUWp0allXcGxjbTh3TVR0SGIyOW5iR1ZEYUhKdmJXVTdWbVZ5YzJsdmJqZ3dMakF1TXprNE55NHhNakk3TVRreUxqRTJPQzQ0TWk0eE1UVT0=/192.168.1.1`)
+        fetch(`http://192.168.82.105:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/U0xEQjtVMHhFUWp0allXcGxjbTh3TVR0SGIyOW5iR1ZEYUhKdmJXVTdWbVZ5YzJsdmJqZ3dMakF1TXprNE55NHhNakk3TVRreUxqRTJPQzQ0TWk0eE1UVT0=/192.168.1.1`)
         .then(res => res.json())
         .then((data) => {
-
             //Create bank list
-            var lista_bancos = JSON.parse(data.mensaje)
-            lista_bancos = lista_bancos.listabancosSAMF.lista
+            console.log(data.mensaje);
+            var lista_bancos = JSON.parse(data.mensaje);
+            lista_bancos = lista_bancos.listabancos.lista
             let options = lista_bancos.map( (data) =>
                     <option 
                         key={data.cod}
@@ -149,7 +149,7 @@ class PaymentForm extends React.Component {
         // ReactDOM.render(<Alert variant="danger" onClose={() => setShow(false)} dismissible>
         //     Error
         // </Alert>, document.getElementById('alert'))
-        fetch(`http://192.168.137.248:8080/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
+        fetch(`http://192.168.82.105:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
             .then(res => res.json())
             .then((data) => {
     
