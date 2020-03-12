@@ -45,9 +45,7 @@ class Receipt extends React.Component {
                                 </Row>
                                 <br/>
                                 <Row>
-                                    <Col xs={12} md={12} ls={12}>
-                                        <Button onClick={print_page}>Imprimir</Button>
-                                    </Col>
+                                    <Button onClick={print_page} style={{ marginLeft: 'auto', marginRight: 'auto' }}>Imprimir</Button>
                                 </Row>
                             </Container>
                         </Card.Text>

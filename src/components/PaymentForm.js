@@ -128,9 +128,11 @@ class PaymentForm extends React.Component {
                                     </Form.Group>
                                 </Col>
                             </Row>
-                            <Button variant="primary" onClick={this.pay.bind(this, this.state.precio)}>
-                            Pagar Ahora
-                            </Button>
+                            <Row>
+                                <Button variant="primary" onClick={this.pay.bind(this, this.state.precio)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                                Pagar Ahora
+                                </Button>
+                            </Row>
                         </Form>
                     </Card.Text>
                 </Card.Body>
