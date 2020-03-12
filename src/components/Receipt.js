@@ -5,9 +5,9 @@ import check_mark from '../img/check.svg'
 class Receipt extends React.Component {
     render() {
         return (
-            <Container fluid={true}>
-                <Card style={{ width: '100%', height: '100%' }}>
-                    <Card.Img variant="top" src={check_mark} width="200" height="200" />
+            <Container fluid={true} style={{ marginTop: '15px' }} >
+                <Card style={{ width: '100%', height: '100%'}}>
+                    <Card.Img variant="top" src={check_mark} style={{ width: '200px', height: '200px', marginRight: 'auto', marginLeft: 'auto', marginTop: '20px' }} />
                     <Card.Body>
                         <Card.Title> <h3 style={{ color: "#5D9BEB" }}> {this.props.detalle} </h3></Card.Title>
                         <Card.Text>

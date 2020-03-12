@@ -55,12 +55,12 @@ class PaymentForm extends React.Component {
     }
     render() {
         return (
-        <Container fluid={true}>
+        <Container fluid={true} style={{ marginTop: '15px' }}>
             <div id="alert"></div>
-            <Card style={{ width: '100%', height: '100%' }}>
-                <Card.Img variant="top" src={logo} style={{ width: '300px', height: '70px', marginRight: 'auto', marginLeft: 'auto' }}/>
+            <Card style={{ width: '100%', height: '100%'}}>
+                <Card.Img variant="top" src={logo} style={{ width: '320px', height: '80px', marginRight: 'auto', marginLeft: 'auto', marginTop: '20px' }}/>
                 <Card.Body>
-                    <Card.Title style={{ color: "#4A5A67" }}>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</Card.Title>
+                    <Card.Title style={{ color: "#4A5A67", paddingTop: "20px"}}><h2>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</h2></Card.Title>
                     <Card.Text>
                         <Form noValidate>
                             <Row>
