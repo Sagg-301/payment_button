@@ -16,7 +16,7 @@ class PaymentForm extends React.Component {
       }
 
     componentWillMount(){
-        fetch(`http://c2p.itssca.net:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/U0xEQjtVMHhFUWp0allXcGxjbTh3TVR0SGIyOW5iR1ZEYUhKdmJXVTdWbVZ5YzJsdmJqZ3dMakF1TXprNE55NHhNakk3TVRreUxqRTJPQzQ0TWk0eE1UVT0=/192.168.1.1`)
+        fetch(`http://192.168.82.105:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/U0xEQjtVMHhFUWp0allXcGxjbTh3TVR0SGIyOW5iR1ZEYUhKdmJXVTdWbVZ5YzJsdmJqZ3dMakF1TXprNE55NHhNakk3TVRreUxqRTJPQzQ0TWk0eE1UVT0=/192.168.1.1`)
         .then(res => res.json())
         .then((data) => {
             //Create bank list
@@ -55,12 +55,12 @@ class PaymentForm extends React.Component {
     }
     render() {
         return (
-        <Container>
+        <Container fluid={true}>
             <div id="alert"></div>
             <Card style={{ width: '100%', height: '100%' }}>
-                <Card.Img variant="top" src={logo}/>
+                <Card.Img variant="top" src={logo} style={{ width: '300px', height: '70px', marginRight: 'auto', marginLeft: 'auto' }}/>
                 <Card.Body>
-                    <Card.Title>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</Card.Title>
+                    <Card.Title style={{ color: "#4A5A67" }}>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</Card.Title>
                     <Card.Text>
                         <Form noValidate>
                             <Row>
@@ -149,7 +149,7 @@ class PaymentForm extends React.Component {
         // ReactDOM.render(<Alert variant="danger" onClose={() => setShow(false)} dismissible>
         //     Error
         // </Alert>, document.getElementById('alert'))
-        fetch(`http://c2p.itssca.net:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
+        fetch(`http://192.168.82.105:8085/WsSamfGtwRest-1.1/WsSamfmovilGtwRest/resource/GTWC2P/2/${b64_params}/192.168.82.115`)
             .then(res => res.json())
             .then((data) => {
     
