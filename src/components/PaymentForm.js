@@ -5,6 +5,7 @@ import { Button, Form, Container, Row, Col, Card, Alert } from 'react-bootstrap'
 import IMask from 'imask';
 import logo from '../img/logos/itss_trans.png';
 import $ from 'jquery';
+import { number_format } from 'phpjs/build/npm';
 
 class PaymentForm extends React.Component {
 
@@ -40,7 +41,8 @@ class PaymentForm extends React.Component {
 
         var urlParams = new URLSearchParams(window.location.search);
         this.setState({
-            precio: urlParams.get('price')
+            precio: urlParams.get('price'),
+            moneda: urlParams.get('currency')
             });
     }
 
@@ -60,7 +62,7 @@ class PaymentForm extends React.Component {
             <Card style={{ width: '100%', height: '100%'}}>
                 <Card.Img variant="top" src={logo} style={{ width: '320px', height: '80px', marginRight: 'auto', marginLeft: 'auto', marginTop: '20px' }}/>
                 <Card.Body>
-                    <Card.Title style={{ color: "#4A5A67", paddingTop: "20px"}}><h2>Total a pagar: Bs {new Intl.NumberFormat('es-ES', { maximumSignificantDigits: 3 }).format(this.state.precio)}</h2></Card.Title>
+                    <Card.Title style={{ color: "#4A5A67", paddingTop: "20px"}}><h2>Total a pagar: {this.state.moneda} {number_format(this.state.precio,2,',','.')}</h2></Card.Title>
                     <Card.Text>
                         <Form noValidate>
                             <Row>
@@ -129,7 +131,7 @@ class PaymentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Button variant="primary" onClick={this.pay.bind(this, this.state.precio)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                                <Button variant="primary" onClick={this.pay.bind(this, this.state.precio, this.state.moneda)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                                 Pagar Ahora
                                 </Button>
                             </Row>
@@ -148,7 +150,7 @@ class PaymentForm extends React.Component {
     );
     }
 
-    pay(precio) {
+    pay(precio, moneda) {
         //Construct Endpoint String
         var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
         console.log(params)
@@ -163,14 +165,11 @@ class PaymentForm extends React.Component {
             .then((data) => {
     
                 var mensaje = JSON.parse(data.mensaje)
-                console.log(data)
-    
-                var time = new Date().getTime();
-                var date = new Date(time)
+                console.log(moneda)
 
                 if (this.validate()){
                     ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={$('#banco').find('option:selected').text()} detalle={data.detalle.replace("detalle: ", "")}
-                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={date.toLocaleDateString('es-ES')}/>, document.getElementById('root'));
+                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={mensaje.fecha.replace(/-/g,'/') + ' ' + mensaje.hora} moneda={moneda}/>, document.getElementById('root'));
                 }
 
             })
