@@ -62,7 +62,7 @@ class PaymentForm extends React.Component {
             <Card style={{ width: '100%', height: '100%'}}>
                 <Card.Img variant="top" src={logo} style={{ width: '320px', height: '80px', marginRight: 'auto', marginLeft: 'auto', marginTop: '20px' }}/>
                 <Card.Body>
-                    <Card.Title style={{ color: "#4A5A67", paddingTop: "20px"}}><h2>Total a pagar: {this.state.moneda} {number_format(this.state.precio,2,',','.')}</h2></Card.Title>
+                    <Card.Title style={{ color: "#4A5A67", paddingTop: "20px"}}><h2>Total a pagar: {this.state.moneda} {this.state.moneda !== 'BTC'? number_format(this.state.precio,2,',','.') : number_format(this.state.precio,5,',','.')}</h2></Card.Title>
                     <Card.Text>
                         <Form noValidate>
                             <Row>
