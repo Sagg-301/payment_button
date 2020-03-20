@@ -176,7 +176,7 @@ class PaymentForm extends React.Component {
 
                 if (this.validate()){
                     ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={$('#banco').find('option:selected').text()} detalle={data.detalle.replace("detalle: ", "")}
-                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={mensaje.fecha.replace(/-/g,'/') + ' ' + mensaje.hora} moneda={moneda}/>, document.getElementById('root'));
+                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={mensaje.fecha.replace(/-/g,'/') + ' ' + mensaje.hora} moneda={this.state.monedas[this.state.moneda]}/>, document.getElementById('root'));
                 }
 
             })
