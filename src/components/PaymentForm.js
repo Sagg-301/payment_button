@@ -138,7 +138,7 @@ class PaymentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Button variant="primary" onClick={this.pay.bind(this, this.state.precio, this.state.moneda)} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                                <Button variant="primary" onClick={this.pay.bind(this, this.state.precio, this.state.monedas[this.state.moneda])} style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                                 Pagar Ahora
                                 </Button>
                             </Row>
@@ -160,7 +160,7 @@ class PaymentForm extends React.Component {
     pay(precio, moneda) {
         //Construct Endpoint String
         var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
-        console.log(params)
+        // var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${moneda};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
         var b64_params = btoa(`SC2P;${btoa(params)}`);
     
         //Api call 
