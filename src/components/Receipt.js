@@ -31,7 +31,7 @@ class Receipt extends React.Component {
                                 </Row>
                                 <Row>
                                     <Col xs={12} md={12} ls={12}>
-                                        <h5 style={{ color: "#4A5A67"}}>Secuencia: #{Math.floor(Math.random() * 10000)}</h5>
+                                        <h5 style={{ color: "#4A5A67"}}>Secuencia: #{this.props.secuencia}</h5>
                                     </Col>
                                 </Row>
                                 <Row>

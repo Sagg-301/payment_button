@@ -159,8 +159,9 @@ class PaymentForm extends React.Component {
 
     pay(precio, moneda) {
         //Construct Endpoint String
-        var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
-        // var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${moneda};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
+        // var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
+        var params = `SC2P;${$('#prefijo').val()+'-'+$('#telefono').val()};${$('#tipoci').val()+$('#numeroci').val()};${$('#banco').val()};${moneda};${precio};${$('#concepto').val()};${'J0000000'};${'0426-8205166'};${'0134'};${'cajero01'};${$('#otp').val().replace('-','')};${'GoogleChrome'};${'Versión80.0.3987.122'};${'192.168.82.115'}`;
+        console.log(params);
         var b64_params = btoa(`SC2P;${btoa(params)}`);
     
         //Api call 
@@ -172,11 +173,11 @@ class PaymentForm extends React.Component {
             .then((data) => {
     
                 var mensaje = JSON.parse(data.mensaje)
-                console.log(moneda)
+                console.log(mensaje)
 
                 if (this.validate()){
                     ReactDOM.render(<Receipt total={precio} referencia={mensaje.nroReferencia} banco={$('#banco').find('option:selected').text()} detalle={data.detalle.replace("detalle: ", "")}
-                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={mensaje.fecha.replace(/-/g,'/') + ' ' + mensaje.hora} moneda={this.state.monedas[this.state.moneda]}/>, document.getElementById('root'));
+                    tel={$('#prefijo').val()+'-'+$('#telefono').val()} descripcion={$('#concepto').val()} fecha={mensaje.fecha.replace(/-/g,'/') + ' ' + mensaje.hora} moneda={this.state.monedas[this.state.moneda]} secuencia={mensaje.secuencia}/>, document.getElementById('root'));
                 }
 
             })
